@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="191dp"
             android:layout_weight="1"
-            android:src="@drawable/photo_icon"/>
+            android:src="@drawable/book_icon"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilName"
