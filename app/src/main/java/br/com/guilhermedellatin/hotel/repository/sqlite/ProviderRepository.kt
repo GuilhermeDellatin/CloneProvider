@@ -27,6 +27,7 @@ class ProviderRepository(val ctx: Context) : HotelRepository {
         cv.put(COLUMN_NAME, hotel.name)
         cv.put(COLUMN_ADDRESS, hotel.address)
         cv.put(COLUMN_RATING, hotel.rating)
+        cv.put(COLUMN_PATH, hotel.path)
         return cv
     }
 
@@ -54,7 +55,8 @@ class ProviderRepository(val ctx: Context) : HotelRepository {
         val name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME))
         val address = cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS))
         val rating =  cursor.getFloat(cursor.getColumnIndex(COLUMN_RATING))
-        return Hotel(id, name, address, rating)
+        val path = cursor.getString(cursor.getColumnIndex(COLUMN_PATH))
+        return Hotel(id, name, address, rating, path)
     }
 
     override fun search(term: String, callback: (List<Hotel>) -> Unit) {

@@ -1,18 +1,21 @@
 package br.com.guilhermedellatin.hotel.details
 
+//import br.com.guilhermedellatin.hotel.repository.memory.MemoryRepository
+
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.ShareActionProvider
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
-import br.com.guilhermedellatin.hotel.*
+import br.com.guilhermedellatin.hotel.R
 import br.com.guilhermedellatin.hotel.form.HotelFormFragment
 import br.com.guilhermedellatin.hotel.model.Hotel
-//import br.com.guilhermedellatin.hotel.repository.memory.MemoryRepository
 import kotlinx.android.synthetic.main.fragment_hotel_details.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+
 
 class HotelDetailsFragment : Fragment(), HotelDetailsView {
     //private val presenter = HotelDetailsPresenter(this, MemoryRepository)
@@ -38,7 +41,7 @@ class HotelDetailsFragment : Fragment(), HotelDetailsView {
         val text = getString(R.string.share_text, hotel?.name, hotel?.rating)
         shareActionProvider?.setShareIntent(Intent(Intent.ACTION_SEND).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-            type  = "text/plain"
+            type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, text)
         })
     }
@@ -61,6 +64,8 @@ class HotelDetailsFragment : Fragment(), HotelDetailsView {
         txtName.text = hotel.name
         txtAddress.text = hotel.address
         rtbRating.rating = hotel.rating
+        imgView.setImageBitmap(BitmapFactory.decodeFile(hotel.path))
+
     }
 
     override fun errorHotelNotFound() {

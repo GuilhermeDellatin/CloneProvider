@@ -8,7 +8,7 @@ import br.com.guilhermedellatin.hotel.model.Hotel
 import br.com.guilhermedellatin.hotel.repository.HotelRepository
 import java.util.ArrayList
 
-class SQLiteRepository(ctx: Context): HotelRepository {
+class SQLiteRepository(ctx: Context) : HotelRepository {
     private val helper: HotelSqlHelper = HotelSqlHelper(ctx)
 
     private fun insert(hotel: Hotel) {
@@ -17,6 +17,7 @@ class SQLiteRepository(ctx: Context): HotelRepository {
             put(COLUMN_NAME, hotel.name)
             put(COLUMN_ADDRESS, hotel.address)
             put(COLUMN_RATING, hotel.rating)
+            put(COLUMN_PATH, hotel.path)
         }
 
         val id = db.insert(TABLE_HOTEL, null, cv)
@@ -34,13 +35,15 @@ class SQLiteRepository(ctx: Context): HotelRepository {
             put(COLUMN_NAME, hotel.name)
             put(COLUMN_ADDRESS, hotel.address)
             put(COLUMN_RATING, hotel.rating)
+            put(COLUMN_PATH, hotel.path)
         }
 
         db.insertWithOnConflict(
             TABLE_HOTEL,
             null,
             cv,
-            SQLiteDatabase.CONFLICT_REPLACE)
+            SQLiteDatabase.CONFLICT_REPLACE
+        )
         db.close()
     }
 
@@ -58,7 +61,8 @@ class SQLiteRepository(ctx: Context): HotelRepository {
             db.delete(
                 TABLE_HOTEL,
                 "$COLUMN_ID = ?",
-                arrayOf(hotel.id.toString()))
+                arrayOf(hotel.id.toString())
+            )
         }
         db.close()
     }
@@ -97,6 +101,7 @@ class SQLiteRepository(ctx: Context): HotelRepository {
         val name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME))
         val address = cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS))
         val rating = cursor.getFloat(cursor.getColumnIndex(COLUMN_RATING))
-        return Hotel(id, name, address, rating)
+        val path = cursor.getString(cursor.getColumnIndex(COLUMN_PATH))
+        return Hotel(id, name, address, rating, path)
     }
 }

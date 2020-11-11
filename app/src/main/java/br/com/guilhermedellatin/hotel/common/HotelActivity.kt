@@ -2,12 +2,16 @@ package br.com.guilhermedellatin.hotel.common
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import br.com.guilhermedellatin.hotel.*
 import br.com.guilhermedellatin.hotel.details.HotelDetailsActivity
 import br.com.guilhermedellatin.hotel.details.HotelDetailsFragment
@@ -15,6 +19,7 @@ import br.com.guilhermedellatin.hotel.form.HotelFormFragment
 import br.com.guilhermedellatin.hotel.list.HotelListFragment
 import br.com.guilhermedellatin.hotel.model.Hotel
 import kotlinx.android.synthetic.main.activity_hotel.*
+import java.util.jar.Manifest
 
 class HotelActivity : AppCompatActivity(),
     HotelListFragment.OnHotelClickListener,
@@ -24,7 +29,7 @@ class HotelActivity : AppCompatActivity(),
     HotelFormFragment.OnHotelSavedListener {
 
     private var hotelIdSelected: Long = -1
-    private var lastSearchTerm : String = ""
+    private var lastSearchTerm: String = ""
     private var searchView: SearchView? = null
 
     private val listFragment: HotelListFragment by lazy {
@@ -37,6 +42,32 @@ class HotelActivity : AppCompatActivity(),
         fabAdd.setOnClickListener {
             listFragment.hideDeleteMode()
             HotelFormFragment.newInstance().open(supportFragmentManager)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setPermission();
+    }
+
+    private fun setPermission() {
+        if (!getPermission()) {
+            val permissionsList = listOf<String>(android.Manifest.permission.CAMERA)
+            ActivityCompat.requestPermissions(this, permissionsList.toTypedArray(), 1)
+        }
+    }
+
+    private fun getPermission(): Boolean{
+        return (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+            }
         }
     }
 
@@ -137,7 +168,8 @@ class HotelActivity : AppCompatActivity(),
 
     override fun onHotelSaved(hotel: Hotel) {
         listFragment.search(lastSearchTerm)
-        val detailsFragment = supportFragmentManager.findFragmentByTag(HotelDetailsFragment.TAG_DETAILS) as? HotelDetailsFragment
+        val detailsFragment =
+            supportFragmentManager.findFragmentByTag(HotelDetailsFragment.TAG_DETAILS) as? HotelDetailsFragment
         if (detailsFragment != null && hotel.id == hotelIdSelected) {
             showDetailsFragment(hotelIdSelected)
         }
@@ -145,7 +177,8 @@ class HotelActivity : AppCompatActivity(),
 
     override fun onHotelsDeleted(hotels: List<Hotel>) {
         if (hotels.find { it.id == hotelIdSelected } != null) {
-            val fragment = supportFragmentManager.findFragmentByTag(HotelDetailsFragment.TAG_DETAILS)
+            val fragment =
+                supportFragmentManager.findFragmentByTag(HotelDetailsFragment.TAG_DETAILS)
             if (fragment != null) {
                 supportFragmentManager
                     .beginTransaction()

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class HotelSqlHelper(context: Context?) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
         sqLiteDatabase.execSQL(
@@ -13,7 +13,9 @@ class HotelSqlHelper(context: Context?) :
                     "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_NAME TEXT NOT NULL, " +
                     "$COLUMN_ADDRESS TEXT, " +
-                    "$COLUMN_RATING REAL)")
+                    "$COLUMN_RATING REAL, " +
+                    "$COLUMN_PATH TEXT)"
+        )
 
     }
 

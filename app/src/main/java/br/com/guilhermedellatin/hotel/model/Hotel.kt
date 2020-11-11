@@ -4,9 +4,10 @@ data class Hotel(
     var id: Long = 0,
     var name: String = "",
     var address: String = "",
-    var rating: Float = 0.0F
+    var rating: Float = 0.0F,
+    var path: String = ""
 ) {
-    override fun toString(): String  = name
+    override fun toString(): String = name
 }
 
 
