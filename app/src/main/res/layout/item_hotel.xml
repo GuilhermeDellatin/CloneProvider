@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/selector_list_item">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgView"
-        android:layout_width="78dp"
-        android:layout_height="65dp"
-        android:layout_gravity="fill"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/book_icon"
+        app:civ_border_color="@color/grayBorder"
+        app:civ_border_width="1dp"
+        app:civ_circle_background_color="@color/backColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/eurobo" />
-
-    <RatingBar
-        android:id="@+id/rtbRating"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="78dp"
-        android:layout_height="24dp"
-        android:layout_gravity="end"
-        android:layout_marginTop="24dp"
-        android:isIndicator="true"
-        android:progressTint="@color/colorPurple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/txtName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtName"
-        android:layout_width="82dp"
+        android:layout_width="174dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_weight="1"
         android:text="@null"
+        android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        app:layout_constraintStart_toEndOf="@+id/imgView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rtbRating"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toEndOf="@id/imgView"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RatingBar
+        android:id="@+id/rtbRating"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:isIndicator="true"
+        android:progressTint="@color/backColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.507" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

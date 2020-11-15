@@ -1,9 +1,12 @@
 package br.com.guilhermedellatin.hotel.form
 
 //import br.com.guilhermedellatin.hotel.repository.memory.MemoryRepository
+
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -27,6 +30,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class HotelFormFragment : DialogFragment(), HotelFormView {
     //private val presenter = HotelFormPresenter(this, MemoryRepository)
     val REQUEST_TAKE_PHOTO = 1;
@@ -45,8 +49,11 @@ class HotelFormFragment : DialogFragment(), HotelFormView {
         imageView.setOnClickListener(View.OnClickListener {
             dispatchTakePictureIntent();
         })
+
         return view;
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,6 +62,8 @@ class HotelFormFragment : DialogFragment(), HotelFormView {
         edtAddress.setOnEditorActionListener { _, i, _ ->
             handleKeyboardEvent(i)
         }
+
+
         dialog?.setTitle(R.string.action_new_hotel)
         // Abre o teclado virtual ao exibir o Dialog
         dialog?.window?.setSoftInputMode(
@@ -75,6 +84,7 @@ class HotelFormFragment : DialogFragment(), HotelFormView {
     override fun errorInvalidHotel() {
         Toast.makeText(requireContext(), R.string.error_invalid_hotel, Toast.LENGTH_SHORT).show()
     }
+
 
     private fun handleKeyboardEvent(actionId: Int): Boolean {
         if (EditorInfo.IME_ACTION_DONE == actionId) {
@@ -97,7 +107,6 @@ class HotelFormFragment : DialogFragment(), HotelFormView {
             intent.resolveActivity(activity?.packageManager!!)?.also {
                 startActivityForResult(intent, REQUEST_TAKE_PHOTO)
             }
-
         }
     }
 
@@ -164,4 +173,6 @@ class HotelFormFragment : DialogFragment(), HotelFormView {
             }
         }
     }
+
 }
+

@@ -55,14 +55,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/form_label_rating"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/backColor"/>
 
         <RatingBar
             android:id="@+id/rtbRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:progressTint="@color/colorPurple"
+            android:progressTint="@color/backColor"
             android:stepSize="0.5" />
 
     </LinearLayout>

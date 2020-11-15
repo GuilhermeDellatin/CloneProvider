@@ -15,6 +15,7 @@ import br.com.guilhermedellatin.hotel.model.Hotel
 import kotlinx.android.synthetic.main.fragment_hotel_details.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import java.io.IOException
 
 
 class HotelDetailsFragment : Fragment(), HotelDetailsView {
@@ -65,7 +66,6 @@ class HotelDetailsFragment : Fragment(), HotelDetailsView {
         txtAddress.text = hotel.address
         rtbRating.rating = hotel.rating
         imgView.setImageBitmap(BitmapFactory.decodeFile(hotel.path))
-
     }
 
     override fun errorHotelNotFound() {
