@@ -7,7 +7,9 @@
     <string name="hint_search">Procurar por Hotel</string>
 
     <string name="about_title">Dominando o Android</string>
+    <string name="warring_title">Aviso</string>
     <string name="about_message">Desenvolvido por nglauber</string>
+    <string name="delete_message">Deseja deletar ?</string>
     <string name="about_button_site">Site</string>
 
     <string name="form_label_name">Nome</string>

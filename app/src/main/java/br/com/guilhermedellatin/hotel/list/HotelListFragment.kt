@@ -1,5 +1,7 @@
 package br.com.guilhermedellatin.hotel.list
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.ListFragment
 import br.com.guilhermedellatin.hotel.R
+import br.com.guilhermedellatin.hotel.details.HotelDetailsFragment
 import br.com.guilhermedellatin.hotel.model.Hotel
 //import br.com.guilhermedellatin.hotel.repository.memory.MemoryRepository
 import com.google.android.material.snackbar.Snackbar
@@ -23,6 +26,7 @@ class HotelListFragment : ListFragment(),
     ActionMode.Callback {
     //private val presenter = HotelListPresenter(this, MemoryRepository)
     private val presenter: HotelListPresenter by inject { parametersOf(this) }
+
     //private val presenter: HotelListPresenter by inject()
     private var actionMode: ActionMode? = null
 
@@ -46,7 +50,11 @@ class HotelListFragment : ListFragment(),
     }
 
     override fun showMessageHotelsDeleted(count: Int) {
-        Snackbar.make(listView, getString(R.string.message_hotel_deleted, count), Snackbar.LENGTH_LONG)
+        Snackbar.make(
+            listView,
+            getString(R.string.message_hotel_deleted, count),
+            Snackbar.LENGTH_LONG
+        )
             .setAction(R.string.undo) {
                 presenter.undoDelete()
             }
@@ -59,9 +67,14 @@ class HotelListFragment : ListFragment(),
         presenter.selectHotel(hotel)
     }
 
-    override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
+    override fun onItemLongClick(
+        parent: AdapterView<*>?,
+        view: View?,
+        position: Int,
+        id: Long
+    ): Boolean {
         val consumed = (actionMode == null)
-        if (consumed){
+        if (consumed) {
             val hotel = parent?.getItemAtPosition(position) as Hotel
             presenter.showDeleteMode()
             presenter.selectHotel(hotel)
@@ -78,7 +91,7 @@ class HotelListFragment : ListFragment(),
 
     override fun hideDeleteMode() {
         listView.onItemLongClickListener = this
-        for (i in 0 until listView.count){
+        for (i in 0 until listView.count) {
             listView.setItemChecked(i, false)
         }
         listView.post {
@@ -89,7 +102,8 @@ class HotelListFragment : ListFragment(),
 
     override fun updateSelectionCountText(count: Int) {
         view?.post {
-            actionMode?.title = resources.getQuantityString(R.plurals.list_hotel_selected, count, count)
+            actionMode?.title =
+                resources.getQuantityString(R.plurals.list_hotel_selected, count, count)
         }
     }
 
@@ -98,7 +112,7 @@ class HotelListFragment : ListFragment(),
             for (i in 0 until listView.count) {
                 val hotel = listView.getItemAtPosition(i) as Hotel
                 if (hotels.find { it.id == hotel.id } != null) {
-                    listView.setItemChecked(i ,true)
+                    listView.setItemChecked(i, true)
                 }
             }
         }
@@ -106,11 +120,27 @@ class HotelListFragment : ListFragment(),
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if (item?.itemId == R.id.action_delete) {
-            presenter.deleteSelected { hotels ->
-                if (activity is OnHotelDeletedListener) {
-                    (activity as OnHotelDeletedListener).onHotelsDeleted(hotels)
-                }
-            }
+            val builder: AlertDialog.Builder? = activity?.let {
+                AlertDialog.Builder(it)
+            };
+
+            builder?.setTitle(R.string.warring_title)
+            builder?.setMessage(R.string.delete_message)
+            builder?.setPositiveButton(android.R.string.ok,
+                DialogInterface.OnClickListener { dialog, id ->
+                    presenter.deleteSelected { hotels ->
+                        if (activity is OnHotelDeletedListener) {
+                            (activity as OnHotelDeletedListener).onHotelsDeleted(hotels)
+                        }
+                    }
+                })
+            builder?.setNegativeButton(android.R.string.cancel,
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                })
+            val dialog: AlertDialog? = builder?.create()
+            dialog?.show()
+
             return true
         }
         return false
@@ -136,11 +166,11 @@ class HotelListFragment : ListFragment(),
         fun onHotelsDeleted(hotels: List<Hotel>)
     }
 
-    fun search(text: String){
+    fun search(text: String) {
         presenter.searchHotels(text)
     }
 
-    fun clearSearch(){
+    fun clearSearch() {
         presenter.searchHotels("")
     }
 }
